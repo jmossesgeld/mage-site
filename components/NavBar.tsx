@@ -34,7 +34,7 @@ export default function NavBar() {
       /> */}
       <div className="flex space-x-8 justify-end items-center h-full">
         <NavLink
-          className="text-rose-500 hover:text-rose-300 transition-all hover:-translate-y-1"
+          className="text-rose-500 hover:text-rose-300 animate-pulse"
           href="/"
         >
           New In!
