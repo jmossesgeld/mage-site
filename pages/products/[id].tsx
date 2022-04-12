@@ -30,6 +30,7 @@ export default function ProductPage({ imgsrc, title, price }) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  // Get the paths we want to pre-render based on products
   const paths = productList.map((product) => ({
     params: { id: String(product.id) },
   }));
@@ -41,7 +42,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  // Get the product data for the specified product id
   const data = productList.find((product) => product.id.toString() === params.id);
+  
   return {
     props: data,
   };
