@@ -1,9 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
-import NavBar from "../../components/NavBar";
-import productList from "../../lib/data/productList";
+import NavBar from "../../components/Layout/navbar";
+import productList, { Product } from "../../lib/data/productList";
+import Layout from "../../components/Layout";
 
+// Custom button for this page
 const Button = ({ children, className, ...props }: any) => (
   <button
     className={
@@ -16,35 +18,37 @@ const Button = ({ children, className, ...props }: any) => (
   </button>
 );
 
-export default function ProductPage({ imgsrc, title, price }) {
+export default function ProductPage({ imgsrc, title, price, stock, id }: Product) {
   const sizes = ["S", "M", "L", "XL", "XXL"];
   const [selectedSize, setSelectedSize] = React.useState(sizes[0]);
 
   return (
-    <>
-      <NavBar />
-      <div className="flex flex-wrap w-[90%] mt-24 mx-auto max-w-4xl border-2 justify-start  p-4">
+    <Layout>
+      <div className="flex flex-wrap w-[90%] mt-24 mx-auto max-w-4xl border-2 justify-start p-8 gap-y-6">
         <img className="object-contain w-full sm:w-1/2" src={imgsrc} alt={title} />
-        <div className="w-full sm:w-1/2">
-          <p>{title}</p>
-          <p className="text-lg mt-2 text-rose-500">₱{price}</p>
-          <div className="mt-6 after:content-['pcs'] after:position:absolute after:text-black after:inline-block after:ml-2">
+        <div className="w-full sm:w-1/2 flex flex-col gap-y-6 px-4">
+          <div>
+            <p>{title}</p>
+            <p className="text-lg text-rose-500">₱{price}</p>
+          </div>
+          <div className="after:content-['pc(s)'] after:position:absolute after:text-black after:inline-block after:ml-2">
+            <p>Quantity</p>
             <input
               className="w-12 border-2 px-2 py-1"
               type="number"
               placeholder="Quantity"
               min={1}
-              max={10}
+              max={stock}
               defaultValue={1}
             />
           </div>
-          <div className="mt-8">
-            <span>Sizes:</span>
+          <div className="">
+            <p>Sizes</p>
             {["S", "M", "L", "XL", "XXL"].map((size: string, idx) => (
               <button
                 key={idx}
                 className={
-                  "ml-2 border-2 w-8 inline-block text-center rounded-lg " +
+                  "mr-4 mt-2 border-2 w-8 inline-block text-center rounded-lg " +
                   (selectedSize === size && "bg-rose-300 text-white")
                 }
                 onClick={() => setSelectedSize(size)}
@@ -53,7 +57,7 @@ export default function ProductPage({ imgsrc, title, price }) {
               </button>
             ))}
           </div>
-          <div className="flex space-x-4 mt-8">
+          <div className="flex space-x-4 mt-4">
             <Button className="text-rose-600 border-rose-200 border-2 bg-rose-50 ">
               <i className="fa-solid fa-cart-shopping"></i> Add to Cart
             </Button>
@@ -61,12 +65,12 @@ export default function ProductPage({ imgsrc, title, price }) {
           </div>
         </div>
       </div>
-    </>
+    </Layout>
   );
 }
 
+// Get the paths we want to pre-render based on products
 export const getStaticPaths: GetStaticPaths = async () => {
-  // Get the paths we want to pre-render based on products
   const paths = productList.map((product) => ({
     params: { id: String(product.id) },
   }));
@@ -77,8 +81,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
+// Get the product data for the specified product id
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  // Get the product data for the specified product id
   const data = productList.find((product) => product.id.toString() === params.id);
 
   return {
