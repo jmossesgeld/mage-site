@@ -1,27 +1,27 @@
+import { Transition } from "@headlessui/react";
 import React from "react";
 
-export function MenuButton({ children, ...props }) {
-  return <button {...props}>{children}</button>;
-}
-
-export function MenuItems({ children, ...props }) {
-  return <div {...props}>{children}</div>;
-}
-
-export default function Menu({ children }: { children: React.ReactElement[] }) {
+export default function Menu({ children, label, ...props }) {
   const [isOpen, setIsOpen] = React.useState(false);
+  const toggle = () => setIsOpen(!isOpen);
+  console.log(isOpen);
 
-  const ButtonProp = children.find((child) => child.type === MenuButton);
-  const { children: buttonChildren, ...props } = ButtonProp.props;
-
-  const ItemsProp = children.filter((child) => child.type === MenuItems);
-  
   return (
-    <>
-      <MenuButton onClick={() => setIsOpen(!isOpen)} {...props}>
-        {buttonChildren}
-      </MenuButton>
-      {isOpen && ItemsProp}
-    </>
+    <div className="relative">
+      <button onClick={toggle} {...props}>
+        {label}
+      </button>
+      <Transition
+        show={isOpen}
+        enter="transition-opacity duration-75"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-150"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <div onClick={toggle}>{children}</div>
+      </Transition>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
-import Menu, { MenuButton, MenuItems } from "../Controls/Menu";
+import Menu from "../Controls/Menu";
 
 const NavLink = ({
   children,
@@ -24,33 +24,41 @@ export default function NavBar() {
 
   return (
     <div className="fixed flex justify-between px-4 items-center top-0 h-12 w-full bg-slate-800 text-slate-50 z-20">
+      {/* Logo */}
       <Link href="/">
         <a className="text-lg font-bold text-teal-100 hover:text-white cursor-pointer"> MAGE CO.</a>
       </Link>
-      <div className="hidden md:flex space-x-8 justify-end items-center  h-full">
-        <NavLink className="text-rose-500 hover:text-rose-300 animate-pulse" href="/">
-          New In!
-        </NavLink>
-        {categories.map((category, idx) => (
-          <NavLink key={idx} href="/">
-            {category}
+
+      <div className="flex space-x-8 justify-end items-center  h-full">
+        {/* Categories */}
+        <div className="hidden md:flex space-x-8 justify-end items-center">
+          <NavLink className="text-rose-500 hover:text-rose-300 animate-pulse" href="/">
+            New In!
           </NavLink>
-        ))}
+          {categories.map((category, idx) => (
+            <NavLink key={idx} href="/">
+              {category}
+            </NavLink>
+          ))}
+        </div>
+
+        {/* Cart */}
         <NavLink href="/cart">
           <i className="fa-solid fa-cart-shopping"></i> Cart
         </NavLink>
-      </div>
-      <div className=" md:hidden">
-        <Menu>
-          <MenuButton className="border-2 px-2 ">=</MenuButton>
-          <MenuItems className="absolute right-0 mt-2 flex flex-col bg-slate-800 shadow-lg mr-2">
-            {categories.map((item, idx) => (
-              <NavLink key={idx} href="/" className="p-4 text-xl">
-                {item}
-              </NavLink>
-            ))}
-          </MenuItems>
-        </Menu>
+
+        {/* Categories-mobile */}
+        <div className="md:hidden inline-block">
+          <Menu className="border-2 px-2" label="=">
+            <div className="absolute right-0 w-56 flex flex-col bg-slate-800 shadow-lg">
+              {categories.map((item, idx) => (
+                <NavLink key={idx} href="/" className="p-4 text-xl">
+                  {item}
+                </NavLink>
+              ))}
+            </div>
+          </Menu>
+        </div>
       </div>
     </div>
   );
