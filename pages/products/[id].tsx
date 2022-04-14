@@ -2,7 +2,7 @@
 import React from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import NavBar from "../../components/Layout/navbar";
-import productList, { Product } from "../../lib/data/productList";
+import products, { Product } from "../../lib/data/products";
 import Layout from "../../components/Layout";
 
 // Custom button for this page
@@ -71,7 +71,7 @@ export default function ProductPage({ imgsrc, title, price, stock, id }: Product
 
 // Get the paths we want to pre-render based on products
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = productList.map((product) => ({
+  const paths = products.map((product) => ({
     params: { id: String(product.id) },
   }));
 
@@ -83,7 +83,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // Get the product data for the specified product id
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const data = productList.find((product) => product.id.toString() === params.id);
+  const data = products.find((product) => product.id.toString() === params.id);
 
   return {
     props: data,

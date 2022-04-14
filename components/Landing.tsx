@@ -38,12 +38,21 @@ export default function Landing() {
 
   return (
     <div className="bg-slate-800 h-screen flex justify-center">
-      <div className="mt-[15vh] flex flex-col items-start z-10 w-[360px]">
+      <div className="absolute h-screen w-full">
+        <Image
+          src="/images/clothes1.jpg"
+          alt="clothes hanging"
+          layout="fill"
+          objectFit="cover"
+          objectPosition="top"
+        />
+      </div>
+      <div className="mt-[15vh] flex flex-col items-start w-[360px] z-10">
         <Headline>NEW</Headline>
         {collectionSwitch && <Headline>2022</Headline>}
         {yearSwitch && <Headline>COLLECTION</Headline>}
       </div>
-      <Image src="/images/clothes1.jpg" alt="clothes hanging" layout="fill" className="absolute" />
+
       {yearSwitch && Arrow}
     </div>
   );
